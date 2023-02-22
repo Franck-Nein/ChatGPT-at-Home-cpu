@@ -2,7 +2,8 @@ import transformers
 from transformers import utils, pipeline, set_seed
 import torch
 from flask import Flask, request, render_template, session, redirect
-
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 app = Flask(__name__)
 
@@ -13,7 +14,7 @@ MODEL_NAME = "facebook/opt-125m"
 
 # Initialize the chat history
 history = ["Human: Can you tell me the weather forecast for tomorrow?\nBot: Try checking a weather app like a normal person.\nHuman: Can you help me find a good restaurant in the area\nBot: Try asking someone with a functioning sense of taste.\n"]
-generator = pipeline('text-generation', model=f"{MODEL_NAME}", do_sample=True, torch_dtype=torch.half)
+generator = pipeline('text-generation', model=f"{MODEL_NAME}", do_sample=True, torch_dtype=torch.float32)
 
 
 # Define the chatbot logic
